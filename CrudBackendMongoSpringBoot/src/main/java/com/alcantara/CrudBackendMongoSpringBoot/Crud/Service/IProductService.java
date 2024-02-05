@@ -1,5 +1,6 @@
 package com.alcantara.CrudBackendMongoSpringBoot.Crud.Service;
 
+import com.alcantara.CrudBackendMongoSpringBoot.Crud.Dto.ProductDTO;
 import com.alcantara.CrudBackendMongoSpringBoot.Crud.Entity.Product;
 
 import java.util.List;
@@ -9,4 +10,6 @@ public interface IProductService {
     public List<Product> getAll();
     public Product getOne(Long id);
     public Optional<Product>getOneProduct(Long id);
+    public Product postSaveProduct(ProductDTO dto);
+    public Product putProduct(Long id ,ProductDTO dto);
 }

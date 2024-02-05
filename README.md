@@ -1,1 +1,3 @@
 # CrudMongoSpringBootAngular
+-SpringBoot
+Angular

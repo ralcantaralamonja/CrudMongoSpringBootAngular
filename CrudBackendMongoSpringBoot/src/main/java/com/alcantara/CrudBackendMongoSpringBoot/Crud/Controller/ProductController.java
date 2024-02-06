@@ -3,6 +3,7 @@ package com.alcantara.CrudBackendMongoSpringBoot.Crud.Controller;
 import com.alcantara.CrudBackendMongoSpringBoot.Crud.Dto.ProductDTO;
 import com.alcantara.CrudBackendMongoSpringBoot.Crud.Entity.Product;
 import com.alcantara.CrudBackendMongoSpringBoot.Crud.Service.IProductService;
+import com.alcantara.CrudBackendMongoSpringBoot.Global.Exceptions.AttributeException;
 import com.alcantara.CrudBackendMongoSpringBoot.Global.Exceptions.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,11 +35,11 @@ public class ProductController {
         return ResponseEntity.ok(product);
     }
     @PostMapping("/create")
-    public ResponseEntity<Product>postSaveProduct(@RequestBody ProductDTO dto){
+    public ResponseEntity<Product>postSaveProduct(@RequestBody ProductDTO dto) throws AttributeException {
         return ResponseEntity.ok(productService.postSaveProduct(dto));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<Product>putProduct(@PathVariable Long id,@RequestBody ProductDTO dto) throws ResourceNotFound {
+    public ResponseEntity<Product>putProduct(@PathVariable Long id,@RequestBody ProductDTO dto) throws ResourceNotFound, AttributeException {
         return ResponseEntity.ok(productService.putProduct(id,dto));
     }
     @DeleteMapping("{id}")

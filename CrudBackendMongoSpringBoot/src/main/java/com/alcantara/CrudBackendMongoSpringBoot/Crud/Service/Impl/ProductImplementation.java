@@ -4,6 +4,7 @@ import com.alcantara.CrudBackendMongoSpringBoot.Crud.Dto.ProductDTO;
 import com.alcantara.CrudBackendMongoSpringBoot.Crud.Entity.Product;
 import com.alcantara.CrudBackendMongoSpringBoot.Crud.Repository.IProductRepository;
 import com.alcantara.CrudBackendMongoSpringBoot.Crud.Service.IProductService;
+import com.alcantara.CrudBackendMongoSpringBoot.Global.Exceptions.AttributeException;
 import com.alcantara.CrudBackendMongoSpringBoot.Global.Exceptions.ResourceNotFound;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,14 +33,20 @@ public class ProductImplementation implements IProductService {
     }
 
     @Override
-    public Product postSaveProduct(ProductDTO dto) {
+    public Product postSaveProduct(ProductDTO dto) throws AttributeException {
+        if (productRepository.existsByDescription(dto.getDescription()))
+            throw  new AttributeException("Name already in use");
+
         Long id = autoIncremental();
         Product product = new Product(id,dto.getDescription(),dto.getPrice());
         return productRepository.save(product);
     }
 
     @Override
-    public Product putProduct(Long id, ProductDTO dto) throws ResourceNotFound {
+    public Product putProduct(Long id, ProductDTO dto) throws ResourceNotFound, AttributeException {
+        if(productRepository.existsByDescription(dto.getDescription()) && productRepository.findByDescription(dto.getDescription()).get().getId() != id ){
+            throw new AttributeException("Name already in use");
+        }
         Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Not Found"));
         product.setDescription(dto.getDescription());
         product.setPrice(dto.getPrice());
